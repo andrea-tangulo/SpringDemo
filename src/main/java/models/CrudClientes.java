@@ -33,7 +33,7 @@ public class CrudClientes {
 			miSesion.save(miCliente);
 			System.out.println(miCliente);
 			miSesion.getTransaction().commit();
-			System.out.println("¡Cliente insertado! Con id: " + miCliente.getId());
+			System.out.println("Registro del cliente insertado con id: " + miCliente.getId());
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
