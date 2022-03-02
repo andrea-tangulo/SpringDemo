@@ -126,8 +126,6 @@ public class Factory{
 		return miCliente;
 	}	
 	
-	
-	
 	public Direccion CreateDireccion(
 			Empleado empleado,
 			String Direccion, 
