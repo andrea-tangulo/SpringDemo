@@ -58,26 +58,33 @@ public class Factory{
 	}
 
 	public Cita CreateCita(int _IdCliente, int _IdEmpleado, Date _Fecha, float _Monto) {
-		//empezar transaccion con la session
-		miSesion.beginTransaction();
-		
-		//si el monto no es válido
-		if(_Monto < 0) { return null; }
-		
-		if(ExisteLaCita(_IdCliente, _IdEmpleado, _Fecha)) { return null; }
-		else {		
-			miEmpleado = ExisteElEmpleado(_IdEmpleado);
-			miCliente = ExisteElCliente(_IdCliente);
-			if(miEmpleado!=null && miCliente!=null) {
-				now = System.currentTimeMillis();
-				sqlDate = new Date(now);
-				miCita = new Cita(miCliente, miEmpleado,_Fecha, _Monto, sqlDate);
-				/*miCita.idCliente = _IdCliente;
-				cita.IdEmpleado = _IdEmpleado;
-				cita.Fecha = _Fecha;
-				cita.Monto = _Monto;*/
+		try {
+			//empezar transaccion con la session
+			miSesion.beginTransaction();
+			
+			//si el monto no es válido
+			if(_Monto < 0) { return null; }
+			
+			if(ExisteLaCita(_IdCliente, _IdEmpleado, _Fecha)) { return null; }
+			else {		
+				miEmpleado = ExisteElEmpleado(_IdEmpleado);
+				miCliente = ExisteElCliente(_IdCliente);
+				if(miEmpleado!=null && miCliente!=null) {
+					now = System.currentTimeMillis();
+					sqlDate = new Date(now);
+					miCita = new Cita(miCliente, miEmpleado,_Fecha, _Monto, sqlDate);
+					/*miCita.idCliente = _IdCliente;
+					cita.IdEmpleado = _IdEmpleado;
+					cita.Fecha = _Fecha;
+					cita.Monto = _Monto;*/
+				}
+				else { return null; }
 			}
-			else { return null; }
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			miSesion.close();
+			miFactory.close();
 		}
 		return miCita;
 	}
