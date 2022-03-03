@@ -104,17 +104,18 @@ public class Factory{
 	
 	
 	public Empleado CreateEmpleado(String Nombre, String Telefono, String Correo, 
-			String puesto) {
+			String puesto, String pass) {
 		
 		if(Nombre == "" || Nombre == null) { return null; }
 		if(Telefono == "" || Telefono == null) { return null; }
 		if(Correo == "" || Correo == null) { return null; }
 		if(puesto == "" || puesto == null) { return null; }
+		if(pass == "" || pass == null || pass.length() != 8) { return null; }
 		//if(Dirección == null) { return null; }
 		//if(LastUpdate == null) { return null; }
 		
 		establecerFecha();
-		miEmpleado = new Empleado(Nombre,Telefono,Correo,puesto,true,sqlDate);
+		miEmpleado = new Empleado(Nombre,Telefono,Correo,puesto,true,sqlDate, pass);
 		
 		/*miEmpleado.Nombre = Nombre;
 		miEmpleado.Telefono = Telefono;
@@ -153,7 +154,6 @@ public class Factory{
 	{
 		//if(empleado == null) { return null; }
 		int idEmpleado = empleado.getId();
-		
 		if(ExisteElEmpleado(idEmpleado) == null) return null;
 		if(Direccion == "" || Direccion == null) { return null; }
 		if(Municipio == null) { return null; }

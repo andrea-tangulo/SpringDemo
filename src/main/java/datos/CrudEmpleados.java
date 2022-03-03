@@ -15,7 +15,37 @@ public class CrudEmpleados {
 	public static void main(String[] args) {
 		// TODO 
 		CrudEmpleados obj = new CrudEmpleados();
-		obj.insertarEmpleados("José", "5574936741", "josé.plopez@neoris.com", "Barbero");
+		
+		obj.insertarEmpleados("Pedro", "8976452901", "pedroLopez@gmail.com", "Gerente", "jG83l?1m", 
+				"calle av. del mar 1200", "mazatlan", "sinaloa", "82120");
+	}
+
+	public void insertarEmpleados(String nombre, String telefono, String correo, String puesto, 
+			String pass, String direccion, String municipio, String estado, String codigoPostal) {
+		inicializarSesiones();
+		try {
+			miSession.beginTransaction();
+			Empleado miEmpleado = miFactory.CreateEmpleado(nombre, telefono, correo, puesto, pass);
+			if (miEmpleado == null) System.out.println("Error creando al empleado!!");
+			else {
+				miSession.save(miEmpleado); //insert
+				Direccion miDireccion = miFactory.CreateDireccion(miEmpleado, direccion, municipio, 
+						estado, codigoPostal);
+				if (miDireccion == null) System.out.println("Error creando la direccion..."); 
+				else{
+					miEmpleado.agregarDireccion(miDireccion);
+					miSession.save(miDireccion);
+					miSession.getTransaction().commit();
+					System.out.println("¡Empleado Creado! " + miEmpleado);
+					System.out.println("Direccion relacionada: " + miDireccion);
+				}
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			miSession.close();
+			miSessionFactory.close();
+		}
 	}
 	
 	private void inicializarSesiones() {
@@ -27,23 +57,5 @@ public class CrudEmpleados {
 				.buildSessionFactory();
 		miSession = miSessionFactory.openSession();
 		miFactory = new Factory();
-	}
-
-	public void insertarEmpleados(String nombre, String telefono, String correo, String puesto) {
-		inicializarSesiones();
-		try {
-			Empleado miEmpleado = miFactory.CreateEmpleado(nombre, telefono, correo, puesto);
-			miSession = miSessionFactory.openSession();
-			miSession.beginTransaction();
-			miSession.save(miEmpleado);
-			System.out.println(miEmpleado);
-			miSession.getTransaction().commit();
-			System.out.println("¡Empleado Creado! Con id: " + miEmpleado.getId());
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			miSession.close();
-			miSessionFactory.close();
-		}
 	}
 }

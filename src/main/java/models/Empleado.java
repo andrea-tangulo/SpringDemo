@@ -34,19 +34,26 @@ public class Empleado {
 	@Column(name="LAST_UPDATE")
 	private Date lastUpdate;
 	
+	@Column(name="PASS")
+	private String pass;
+	
 	@OneToMany(mappedBy="empleado", cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
 	private List<Cita> cita;
+	
+	@OneToMany(mappedBy="empleado", cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+	private List<Direccion> direcciones;
 	
 	public Empleado() {}
 
 	public Empleado(String nombre, String telefono, String correo, String puesto, boolean activo,
-			Date lastUpdate) {
+			Date lastUpdate, String pass) {
 		this.nombre = nombre;
 		this.telefono = telefono;
 		this.correo = correo;
 		this.puesto = puesto;
 		this.activo = activo;
 		this.lastUpdate = lastUpdate;
+		this.pass = pass;
 	}
 
 	public int getId() {
@@ -63,6 +70,14 @@ public class Empleado {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	public String getPass() {
+		return pass;
+	}
+
+	public void setPass(String pass) {
+		this.pass = pass;
 	}
 
 	public String getTelefono() {
@@ -113,10 +128,24 @@ public class Empleado {
 		this.cita = cita;
 	}
 	
+	public List<Direccion> getDirecciones() {
+		return direcciones;
+	}
+
+	public void setDirecciones(List<Direccion> direcciones) {
+		this.direcciones = direcciones;
+	}
+
 	public void agregarCitas(Cita miCita) {
 		if(miCita==null) new ArrayList<>();
 		cita.add(miCita);
 		miCita.setEmpleado(this);
+	}
+	
+	public void agregarDireccion(Direccion miDireccion) {
+		if(miDireccion==null) new ArrayList<>();
+		direcciones.add(miDireccion);
+		miDireccion.setEmpleado(this);
 	}
 
 	@Override
