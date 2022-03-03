@@ -34,6 +34,9 @@ public class Empleado {
 	@Column(name="LAST_UPDATE")
 	private Date lastUpdate;
 	
+	@OneToMany(mappedBy="empleado", cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+	private List<Cita> cita;
+	
 	public Empleado() {}
 
 	public Empleado(String nombre, String telefono, String correo, String puesto, boolean activo,
@@ -100,6 +103,20 @@ public class Empleado {
 
 	public void setLastUpdate(Date lastUpdate) {
 		this.lastUpdate = lastUpdate;
+	}
+
+	public List<Cita> getCita() {
+		return cita;
+	}
+
+	public void setCita(List<Cita> cita) {
+		this.cita = cita;
+	}
+	
+	public void agregarCitas(Cita miCita) {
+		if(miCita==null) new ArrayList<>();
+		cita.add(miCita);
+		miCita.setEmpleado(this);
 	}
 
 	@Override

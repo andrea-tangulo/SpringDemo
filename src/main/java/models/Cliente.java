@@ -29,6 +29,7 @@ public class Cliente {
 	@OneToMany(mappedBy="cliente", cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
 	private List<Cita> cita;
 	
+	public Cliente() {}
 
 	public Cliente(String nombre, String telefono, String correo, Date lastUpdate) {
 		this.nombre = nombre;
